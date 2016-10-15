@@ -32,7 +32,7 @@ def get_all_tweets(screen_name):
     auth.set_access_token(access_key, access_secret)
     api = tweepy.API(auth)
 
-    for result in tweepy.Cursor(api.user_timeline, screen_name=screen_name, count=200).items():
+    for result in tweepy.Cursor(api.user_timeline, screen_name=screen_name, count=200, retry_count=5, retry_delay=5, retry_errors=True, timeout=120, wait_on_rate_limit=True, wait_on_rate_limit_notify=True).items():
         write_tweet(result, screen_name)
 
     # new_tweets = api.user_timeline(screen_name=screen_name, count=200, wait_on_rate_limit=True, wait_on_rate_limit_notify= True)
@@ -59,7 +59,7 @@ def get_audience(tweet_id, screen_name):
     api = tweepy.API(auth)
 
 
-    for result in tweepy.Cursor(api.retweeters, id=tweet_id).items():
+    for result in tweepy.Cursor(api.retweeters, id=tweet_id, retry_count=5, retry_delay=5, retry_errors=True, timeout=120, wait_on_rate_limit=True, wait_on_rate_limit_notify=True).items():
         audience_set.add(result)
     
 
